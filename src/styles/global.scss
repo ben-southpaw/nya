@@ -1,0 +1,66 @@
+@import 'variables';
+
+
+/* Hide default scrollbar for WebKit browsers (Chrome, Safari, newer versions of Opera) */
+::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide default scrollbar for Firefox */
+* {
+	scrollbar-width: none;
+}
+
+/* Hide default scrollbar for IE and Edge */
+* {
+	-ms-overflow-style: none;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Ensure smooth scrolling behavior */
+html {
+	scroll-behavior: smooth;
+	p,
+	h1,
+	h2,
+	h3,
+	h4 {
+		margin: 0;
+	}
+}
+
+// @font-face {
+// 	font-family: 'Mercator';
+// 	src: url('/fonts/MercatorNieuwTest-ExtraLightItalic.otf') format('opentype');
+// 	font-weight: lighter;
+// 	font-style: italic;
+// }
+
+// @font-face {
+// 	font-family: 'Mercator';
+// 	src: url('/fonts/MercatorNieuwTest-Regular.otf') format('opentype');
+// 	font-weight: 500;
+// 	font-style: normal;
+// }
+
+// @font-face {
+// 	font-family: 'Mercator';
+// 	src: url('/fonts/MercatorNieuwTest-HeavyItalic.otf') format('opentype');
+// 	font-weight: bold;
+// 	font-style: italic;
+// }
+
+// @font-face {
+// 	font-family: 'Mercator';
+// 	src: url('/fonts/MercatorNieuwTest-Light.otf') format('opentype');
+// 	font-weight: normal;
+// 	font-style: normal;
+// }
+
+
+
