@@ -87,7 +87,7 @@ $transition-duration: 1s;
 	--scale: #{$scale-min}px;
 	min-height: $unit * 0;
 
-	@media only screen and ($min-unit: $screen-min * 1px) {
+	@media only screen and ($min-unit: calc($screen-min * 1px)) {
 		--scale: calc(
 			#{$scale-min}px + #{$scale-max - $scale-min} * (
 					#{$unit * 100} - #{$screen-min}px
@@ -96,7 +96,7 @@ $transition-duration: 1s;
 	}
 
 	@if ($limit-scale) {
-		@media only screen and ($min-unit: $screen-max * 1px) {
+		@media only screen and ($min-unit: calc($screen-max * 1px)) {
 			--scale: #{$scale-max}px;
 		}
 	}
@@ -106,10 +106,10 @@ $transition-duration: 1s;
 	$screen-min,
 	$screen-max,
 	$direction: 'both',
-	$scale-min: math.div($screen-min, $screen-max),
+	$scale-min: calc($screen-min / $screen-max),
 	$scale-max: 1,
 	$limit-scale: true,
-	$aspect-ratio: math.div(1440, 1024)
+	$aspect-ratio: calc(1440 / 1024)
 ) {
 	@include responsive-scale-single-direction(
 		$scale-min,
@@ -121,7 +121,7 @@ $transition-duration: 1s;
 	);
 
 	@if ($direction == 'both') {
-		@media only screen and (min-aspect-ratio: #{math.round($aspect-ratio * 100)}/100) {
+		@media only screen and (min-aspect-ratio: calc(math.round($aspect-ratio * 100) / 100)) {
 			@include responsive-scale-single-direction(
 				$scale-min,
 				$scale-max,
