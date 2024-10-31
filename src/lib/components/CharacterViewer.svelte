@@ -8,6 +8,11 @@
 			''
 		);
 
+	const latinOne =
+		`ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ¡¢£¤¥¦§¨©ª«¬®¯°±²³´ µ ¶ · ¸ ¹ º » ¼ ½ ¾ ¿ × ÷`.split(
+			''
+		);
+
 	let current = 'A';
 	$: current;
 
@@ -19,10 +24,22 @@
 <section>
 	<div class="letter-container">
 		<div class="letter-info">
-			<div class="letter">
-				<div class="cap-height"></div>
-				<p>{current}</p>
+			<div class="line ascender">
+				<span>ascender</span>
 			</div>
+			<div class=" line cap-height">
+				<span>cap-height</span>
+			</div>
+			<div class=" line xheight">
+				<span>x-height</span>
+			</div>
+			<div class=" line baseline">
+				<span>baseline</span>
+			</div>
+			<div class=" line descender">
+				<span>descender</span>
+			</div>
+			<p class="letter">{current}</p>
 		</div>
 	</div>
 
@@ -37,6 +54,16 @@
 				</div>
 			{/each}
 		</div>
+
+		<!-- <div class="gridContainer">
+			{#each latinOne as letter}
+				<div class="gridItem" on:mouseenter={() => (current = letter)}>
+					<p>
+						{letter}
+					</p>
+				</div>
+			{/each}
+		</div> -->
 	</div>
 </section>
 
@@ -62,9 +89,10 @@
 	section {
 		display: grid;
 		grid-template-columns: minmax(0, min(40%, 500px)) auto;
-		grid-gap: 30px;
+		grid-gap: ui(60);
 		position: relative;
 		max-height: 100vh;
+		margin-left: ui(60);
 
 		--units-per-em: 1000;
 		--ascender: 1015;
@@ -75,57 +103,84 @@
 		--monitor-width: 480;
 	}
 	.letter-container {
-		// width: 50vw;
-		// height: 10vh;
-		// display: flex;
-		// align-items: center;
 		--size: calc(var(--monitor-width) * 1 / 2);
 		--half-gap: calc(var(--line-gap) / 2);
 		--scale: calc(var(--size) / var(--units-per-em));
-		font-size: 1rem;
-		line-height: normal;
+		position: sticky;
 	}
 
 	.letter-info {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		position: relative;
+		position: sticky;
 		min-width: 40vw;
+		width: calc(50% - ui(60));
 		margin-bottom: 32px;
 		height: calc(
 			1px * (var(--ascender) - var(--descender) + var(--line-gap)) *
 				var(--scale)
 		);
-
-		.cap-height {
-			position: absolute;
-			border-top: ui(1) solid black;
-			top: ui(80);
-			width: 100%;
-		}
+		top: 50%;
+		transform: translateY(-50%);
+		// background-color: aquamarine;
 
 		.letter {
 			font-size: calc(1px * var(--size));
-			line-height: normal;
 			text-align: center;
 			white-space: pre;
-			position: relative;
-			z-index: 1;
-			p {
+			z-index: 2;
+			line-height: normal;
+			font-family: 'Mercator';
+			font-weight: 500;
+			font-feature-settings:
+				'calt' 0,
+				'liga' 0;
+		}
+
+		.line {
+			width: 100%;
+			border-top: solid 1px #2b2b2b;
+			position: absolute;
+			opacity: 0.5;
+			span {
 				font-family: 'Mercator';
-				font-size: ui(99);
-				font-weight: 800;
-				font-feature-settings:
-					'calt' 0,
-					'liga' 0;
+				position: absolute;
+				bottom: -2.5vh;
+				font-weight: 700;
+				font-size: ui(4);
 			}
+		}
+
+		.cap-height {
+			top: calc(
+				1px * (var(--ascender) + var(--half-gap) - var(--cap-height)) *
+					var(--scale)
+			);
+		}
+		.ascender {
+			top: calc(1px * var(--half-gap) * var(--scale));
+		}
+		.xheight {
+			top: calc(
+				1px * (var(--ascender) - var(--x-height) + var(--half-gap)) *
+					var(--scale)
+			);
+		}
+		.baseline {
+			top: calc(
+				1px * (var(--ascender) + var(--half-gap)) * var(--scale) - 0.5px
+			);
+		}
+		.descender {
+			top: calc(
+				1px * (var(--ascender) - var(--descender) + var(--half-gap)) *
+					var(--scale)
+			);
 		}
 	}
 
 	.alphaWrapper {
 		position: relative;
 		width: calc(50% - ui(60));
+		// width: 100%;
 		padding: ui(60);
 		margin-bottom: ui(128);
 
