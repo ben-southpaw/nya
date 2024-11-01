@@ -1,8 +1,4 @@
 <script>
-	// Props
-	// export let isUppercase = true;
-
-	// Create alphabet grid
 	const alphabet =
 		` !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[/]_abcdefghijklmnopqrstuvwxyz{|}~`.split(
 			''
@@ -15,9 +11,12 @@
 
 	let current = 'A';
 	$: current;
+	let hexCode = '';
 
-	function handleHover() {
-		current = this.innerHTML;
+	function handleHover(event) {
+		current = event.target.querySelector('p').innerHTML;
+		const codePoint = current.codePointAt(0);
+		hexCode = `U+${codePoint.toString(16).toUpperCase()}`;
 	}
 </script>
 
@@ -27,19 +26,32 @@
 			<div class="line ascender">
 				<span>ascender</span>
 			</div>
-			<div class=" line cap-height">
+			<div class="line cap-height">
 				<span>cap-height</span>
 			</div>
-			<div class=" line xheight">
+			<div class="line xheight">
 				<span>x-height</span>
 			</div>
-			<div class=" line baseline">
+			<div class="line baseline">
 				<span>baseline</span>
 			</div>
-			<div class=" line descender">
+			<div class="line descender">
 				<span>descender</span>
 			</div>
 			<p class="letter">{current}</p>
+			<div class="font-info">
+				<p><span>Font name___</span> Mercator Nieuw Regular</p>
+				<p><span>Glyph name___</span> name</p>
+				<p>
+					<span>Unicode hex___</span>
+					{hexCode}
+				</p>
+				<p>
+					<span>Unicode name___</span>
+					here
+				</p>
+				<p><span>Unicode decimal___</span> {current.charCodeAt(0)}</p>
+			</div>
 		</div>
 	</div>
 
@@ -47,7 +59,7 @@
 		<div class="gridContainer">
 			{#each alphabet as letter}
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
-				<div class="gridItem" on:mouseenter={() => (current = letter)}>
+				<div class="gridItem" on:mouseenter={handleHover}>
 					<p>
 						{letter}
 					</p>
@@ -86,13 +98,17 @@
 		}
 	}
 
+	p {
+		font-family: 'Mercator';
+	}
+
 	section {
-		display: grid;
-		grid-template-columns: minmax(0, min(40%, 500px)) auto;
-		grid-gap: ui(60);
+		display: flex;
 		position: relative;
+		justify-content: space-around;
 		max-height: 100vh;
-		margin-left: ui(60);
+		height: 100vh;
+		// width: 100vw;
 
 		--units-per-em: 1000;
 		--ascender: 1015;
@@ -107,12 +123,13 @@
 		--half-gap: calc(var(--line-gap) / 2);
 		--scale: calc(var(--size) / var(--units-per-em));
 		position: sticky;
+		margin-right: auto;
 	}
 
 	.letter-info {
 		position: sticky;
-		min-width: 40vw;
-		width: calc(50% - ui(60));
+		min-width: 42vw;
+		// width: 50vw;
 		margin-bottom: 32px;
 		height: calc(
 			1px * (var(--ascender) - var(--descender) + var(--line-gap)) *
@@ -175,14 +192,29 @@
 					var(--scale)
 			);
 		}
+
+		.font-info {
+			position: absolute;
+			bottom: -100%;
+			height: 100%;
+			width: 100%;
+			p {
+				margin: 0;
+				font-style: italic;
+				span {
+					font-style: normal;
+				}
+			}
+		}
 	}
 
 	.alphaWrapper {
 		position: relative;
-		width: calc(50% - ui(60));
-		// width: 100%;
 		padding: ui(60);
-		margin-bottom: ui(128);
+		margin-right: ui(-60);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
 		@include mobile {
 			padding: 0 ui(20);
@@ -195,7 +227,7 @@
 		grid-template-columns: repeat(11, ui(50));
 		grid-auto-rows: ui(50);
 		width: 100%;
-		height: 100%;
+		// height: 100%;
 
 		@include tablet {
 			grid-template-columns: repeat(6, 1fr);
